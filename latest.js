@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')  
 const axios = require('axios')
+const package = require('./package.json')
 
 const FILENAME = 'latest.zip';
 
@@ -52,7 +53,8 @@ let project = process.argv[3];
 let format =  process.argv[4] || 'zip';
 let outfile =  process.argv[5] || format == 'tar' ? 'latest.tar.gz' : 'latest.zip';
 
-if (process.argv.length < 4) {
+if (owner === "-v" || owner === "--version" || process.argv.length < 4) {
+  console.log("latest "+package.version);
   console.error("Usage: latest owner project [zip|tar [ outfile]]");
   console.error("  e.g. latest appurist github-latest zip latest.zip");
   process.exit(1);
