@@ -53,7 +53,7 @@ let format =  process.argv[4] || 'zip';
 let outfile =  process.argv[5] || format == 'tar' ? 'latest.tar.gz' : 'latest.zip';
 
 if (process.argv.length < 4) {
-  console.error("Usage: latest owner project [[zip|tar] outfile");
+  console.error("Usage: latest owner project [zip|tar [ outfile]]");
   console.error("  e.g. latest appurist github-latest zip latest.zip");
   process.exit(1);
 }
