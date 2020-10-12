@@ -1,0 +1,38 @@
+{
+  "name": "github-latest",
+  "version": "0.1.0",
+  "description": "A simple tool to fetch the latest version from GitHub.",
+  "main": "latest.js",
+  "scripts": {
+    "start": "node latest.js",
+    "build": "pkg latest.js -o latest",
+    "build:win": "pkg -t latest-win-x64 latest.js -o latest.exe",
+    "build:linux": "pkg -t latest-linux-x64 latest.js -o latest",
+    "build:mac": "pkg -t latest-macos-x64 latest.js -o latest-macos"
+  },
+  "engines": {
+    "node": ">= 12.x"
+  },
+  "keywords": [
+    "github",
+    "releases",
+    "utility",
+    "tool"
+  ],
+  "author": "Appurist Software <dev@appurist.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appurist/github-latest.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appurist/github-latest/issues"
+  },
+  "homepage": "https://github.com/appurist/github-latest#readme",
+  "dependencies": {
+    "axios": "^0.20.0"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.9"
+  }
+}
