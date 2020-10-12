@@ -1,10 +1,17 @@
 # github-latest
-A quick little utility to download the latest release of a given project from GitHub.
+A quick little utility to *download the latest release* of a given project from GitHub.
 
-Note: It does not use project versions or tags, it uses the publish date and will download the latest.
+This is a *very specific* tool for my own needs, but is open-source in case it is of use to others, either directly or as example code.
+
+The next version will support unzipping the downloaded file (if you chose zip).
+
+**Note:** It does not use project versions or tags, it uses the publish date and will download the latest.
 
 ### To Build
-To build the tool with yarn:
+
+**Prerequisites:** You must have Node.js installed to build this, as well as `yarn` (or you can run `"npm install"` and substitute `"npm run"` everywhere else you see `"yarn"`).
+
+To **build** this tool with yarn:
 ```
 yarn install
 yarn build
