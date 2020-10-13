@@ -1,9 +1,9 @@
-const path = require('path')
 const fs = require('fs')  
 const axios = require('axios')
 const package = require('./package.json')
+const archive = require('./archive.js')
 
-const FILENAME = 'latest.zip';
+const UNZIP_FOLDER = 'latest-unzipped';
 
 async function fetchReleases(owner, project) {
   let url = `https://api.github.com/repos/${owner}/${project}/releases`;
@@ -53,13 +53,22 @@ let project = process.argv[3];
 let format =  process.argv[4] || 'zip';
 let outfile =  process.argv[5] || format == 'tar' ? 'latest.tar.gz' : 'latest.zip';
 
+let unzip = false;
+if (format === 'unzip') {
+  format = 'zip';
+  unzip = true;
+}
+
 if (owner === "-v" || owner === "--version" || process.argv.length < 4) {
   console.log("latest "+package.version);
-  console.error("Usage: latest owner project [zip|tar [ outfile]]");
+  console.error("Usage: latest owner project [tar|zip|unzip [ outfile]]");
   console.error("  e.g. latest appurist github-latest zip latest.zip");
   process.exit(1);
 }
 
 downloadLatest(owner, project, format, outfile).then((fn)=> {
   console.log("Download complete:", fn);
+  if (unzip) {
+    archive.unzip(fn, UNZIP_FOLDER);
+  }
 })

@@ -54,7 +54,7 @@ typings/
 # next.js build output
 .next
 
-dist/
+latest-unzipped/
 latest
 latest.exe
 latest-macos
