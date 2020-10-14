@@ -7,6 +7,9 @@ The next version will support unzipping the downloaded file (if you chose zip).
 
 **Note:** It does not use project versions or tags, it uses the publish date and will download the latest.
 
+### Download
+Binary executables can be downloaded for Windows, Linux and MacOS X. These are available as assets on [the Release page](https://github.com/appurist/github-latest/releases/latest).
+
 ### To Build
 
 **Prerequisites:** You must have Node.js installed to build this, as well as `yarn` (or you can run `"npm install"` and substitute `"npm run"` everywhere else you see `"yarn"`).
