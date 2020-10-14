@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const yauzl = require('yauzl')
 
-function unzip(pn, altTopFolder) {
+function unzip(pn, altTopFolder, verbose) {
   let topFolder = undefined;
   let nFiles = 0;
   let nFolders = 0;
@@ -13,7 +13,7 @@ function unzip(pn, altTopFolder) {
     }
     zipfile.readEntry();
     zipfile.on("end", function() {
-      console.log(`${nFolders} folders, ${nFiles} files created.`)
+      console.log(`Unzipped ${nFolders} folders, ${nFiles} files to '${altTopFolder}'.`)
     });
     zipfile.on("entry", function(entry) {
       if (/\/$/.test(entry.fileName)) {
@@ -31,7 +31,9 @@ function unzip(pn, altTopFolder) {
         } else {
           folderToCreate = entry.fileName;
         }
-        console.log(folderToCreate);
+        if (verbose) {
+          console.log(folderToCreate);
+        }
         try {
           fs.mkdirSync(folderToCreate);
           nFolders++;
@@ -49,7 +51,9 @@ function unzip(pn, altTopFolder) {
         } else {
           fileToCreate = entry.fileName;
         }
-        console.log(fileToCreate);
+        if (verbose) {
+          console.log(fileToCreate);
+        }
         const writer = fs.createWriteStream(fileToCreate)
         zipfile.openReadStream(entry, function(err, readStream) {
           if (err) {

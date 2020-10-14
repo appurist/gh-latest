@@ -20,11 +20,19 @@ This will produce an executable named `latest` (or `latest.exe` on Windows).
 
 ### Usage
 ```
-latest owner project [tar|zip|unzip [ outfile]]
+Usage: latest [-avxXh?] owner project [tar|zip|unzip [ outfile]]
+ e.g.: latest appurist github-latest unzip release.zip
+   or: latest -X appurist github-latest
+Options are:
+    -a all: display all release versions/tags
+    -x expand: (unzip) the zip file after download
+    -X expand verbose: unzip and show files
+    -v version: show version info
+    -h or -? help: show this usage syntax
 ```
 The default is to download the zip file, and the output filename (`outfile`) is either `latest.zip` or `latest.tar.gz`, depending on the format requested.
 
-Choosing `unzip` is the same as `zip` (it downloads the .zip from GitHub), however it automatically expands the zip file into a new `"latest-unzipped"` folder.
+Choosing `unzip` is the same as `zip` (it downloads the .zip from GitHub), however it automatically expands the zip file into a new `"latest-unzipped"` folder.  Alternatively, specifying a `-x` option before the other arguments also implies a zip format and expands the files. Specifying `-X` (capitalized) expands the zip in a verbose manner, naming every file expanded.
 
 Note that when unzipping, it replaces the top-level GitHub *numbered* folder name (e.g. `"appurist-github-latest-acdd162"`) with a fixed `"latest-unzipped"` folder name for easy scripting and automation. When expanding the zip file, it does *not* remove the downloaded zip file.
 

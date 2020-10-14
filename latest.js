@@ -5,6 +5,23 @@ const archive = require('./archive.js')
 
 const UNZIP_FOLDER = 'latest-unzipped';
 
+let verbose = false;
+let showall = false;
+let unzip = false;
+
+function usage() {
+  console.log("latest "+package.version);
+  console.log("Usage: latest [-avxXh?] owner project [tar|zip|unzip [ outfile]]");
+  console.log("  e.g. latest -x appurist github-latest zip latest.zip");
+  console.log("Options are:");
+  console.log("    -a all: display all release versions/tags (no download)");
+  console.log("    -x expand: (unzip) the zip file after download");
+  console.log("    -X expand verbose: unzip and show files");
+  console.log("    -v version: show version info");
+  console.log("    -h or -? help: show this usage syntax");
+  process.exit(1);
+}
+
 async function fetchReleases(owner, project) {
   let url = `https://api.github.com/repos/${owner}/${project}/releases`;
   const response = await axios({ url, method: 'GET', responseType: 'json' })
@@ -35,10 +52,16 @@ async function downloadLatest(owner, project, format, fn) {
         latestDate = relDate;
         latest = rel;
       }
-      console.log(`${rel.tag_name} "${rel.name}": ${rel[downloadField]}`)
+      if (showall) {
+        console.log(`${rel.tag_name} "${rel.name}": ${rel[downloadField]}`)
+      }
+    }
+    if (showall) {
+      console.log(`If run without -a option, latest will download ${latest.tag_name} "${latest.name}".`)
+      process.exit(0);
     }
 
-    console.log(`Downloading latest ${format} for ${latest.tag_name}...`)
+    console.log(`Downloading ${format} for: ${latest.tag_name} "${latest.name}" ...`)
     await downloadFile(latest[downloadField], fn);
   }
   catch (err) {
@@ -48,27 +71,54 @@ async function downloadLatest(owner, project, format, fn) {
   return fn;
 }
 
-let owner = process.argv[2];
-let project = process.argv[3];
-let format =  process.argv[4] || 'zip';
-let outfile =  process.argv[5] || format == 'tar' ? 'latest.tar.gz' : 'latest.zip';
+let first = 2;
+if ((process.argv[first] === '-v') || (process.argv[first] === '--version')) {
+  console.log("latest "+package.version);
+  process.exit(0);
+}
 
-let unzip = false;
+if (process.argv.length >= 4) {
+  while (process.argv[first].startsWith('-')) {
+    for (let opt of process.argv[first]) {
+      switch(opt) {
+        case '-': break;  // ignore
+        case 'a': showall = true; break;
+        case 'h': usage(); break;
+        case '?': usage(); break;
+        case 'x': unzip = true; break;
+        case 'X': unzip = true; verbose = true; break;
+        case 'v': 
+          console.log("latest "+package.version);
+          break;
+        default:
+          console.log(`Error: Unrecognized option '${opt}'.`);
+          process.exit(1);
+      }
+    }
+    first++;
+  }
+} else {
+  usage();
+}
+
+let owner = process.argv[first];
+let project = process.argv[first+1];
+let format =  process.argv[first+2] || 'zip';
+let outfile =  process.argv[first+3] || format == 'tar' ? 'latest.tar.gz' : 'latest.zip';
+
 if (format === 'unzip') {
   format = 'zip';
   unzip = true;
 }
 
-if (owner === "-v" || owner === "--version" || process.argv.length < 4) {
-  console.log("latest "+package.version);
-  console.error("Usage: latest owner project [tar|zip|unzip [ outfile]]");
-  console.error("  e.g. latest appurist github-latest zip latest.zip");
+if (unzip && (format !== 'zip')) {
+  console.error("Expand (unzip) option only currently supports zip files.");
   process.exit(1);
 }
 
 downloadLatest(owner, project, format, outfile).then((fn)=> {
   console.log("Download complete:", fn);
   if (unzip) {
-    archive.unzip(fn, UNZIP_FOLDER);
+    archive.unzip(fn, UNZIP_FOLDER, verbose);
   }
 })
