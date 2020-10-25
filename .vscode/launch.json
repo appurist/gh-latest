@@ -12,7 +12,7 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\latest.js",
-      "args": ["appurist", "github-latest", "unzip"]
+      "args": ["appurist", "github-latest", "asset"]
     }
   ]
 }
