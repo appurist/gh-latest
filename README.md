@@ -10,24 +10,14 @@ The next version will support unzipping the downloaded file (if you chose zip).
 ### Download
 Binary executables can be downloaded for Windows, Linux and MacOS X. These are available as assets on [the Release page](https://github.com/appurist/github-latest/releases/latest).
 
-### To Build
-
-**Prerequisites:** You must have Node.js installed to build this, as well as `yarn` (or you can run `"npm install"` and substitute `"npm run"` everywhere else you see `"yarn"`).
-
-To **build** this tool with yarn:
-```
-yarn install
-yarn build
-```
-This will produce an executable named `latest` (or `latest.exe` on Windows).
-
 ### Usage
 ```
-Usage: latest [-avxXh?] owner project [tar|zip|unzip [ outfile]]
- e.g.: latest appurist github-latest unzip release.zip
-   or: latest -X appurist github-latest
+Usage: latest [-avxXh?] owner project [tar|zip|unzip|asset [ outfile]]
+ e.g.: latest -x appurist github-latest zip latest.zip
+   or: latest appurist github-latest asset   (list assets)
+   or: latest appurist github-latest asset latest.exe   (download latest.exe)
 Options are:
-    -a all: display all release versions/tags
+    -a all: display all release versions/tags (no download)
     -x expand: (unzip) the zip file after download
     -X expand verbose: unzip and show files
     -v version: show version info
@@ -60,3 +50,27 @@ It is also possible to specify the download file (or path):
 latest appurist github-latest zip outfile.zip
 ```
 This will download the latest zip release as `outfile.zip`.
+
+## Release 1.2: Support for Downloading Assets
+### This update provides new support for assets attached to GitHub releases.
+
+This update adds new functionality to list or download assets.:
+
+For example, using this command, to fetch the latest, um, `latest` executable itself for Windows, you would use:
+```
+latest appurist github-latest asset latest.exe
+```
+To list available assets, just don't specify one:
+```
+latest appurist github-latest asset
+```
+### To Build
+
+**Prerequisites:** You must have Node.js installed to build this, as well as `yarn` (or you can run `"npm install"` and substitute `"npm run"` everywhere else you see `"yarn"`).
+
+To **build** this tool with yarn:
+```
+yarn install
+yarn build
+```
+This will produce an executable named `latest` (or `latest.exe` on Windows).
