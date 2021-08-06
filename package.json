@@ -8,7 +8,7 @@
     "build": "pkg latest.js -t latest -o latest",
     "build:win": "pkg -t latest-win-x64 latest.js -o latest.exe",
     "build:linux": "pkg -t latest-linux-x64 latest.js -o latest",
-    "build:mac": "pkg -t latest-macos-x64 latest.js -o latest"
+    "build:mac": "pkg -t latest-macos-x64 latest.js -o latest-macos"
   },
   "engines": {
     "node": ">= 12.x"
