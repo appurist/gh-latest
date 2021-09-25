@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/appurist/github-latest#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
