@@ -3,8 +3,6 @@ A quick little utility to *download the latest release* of a given project from 
 
 This is a *very specific* tool for my own needs, but is open-source in case it is of use to others, either directly or as example code.
 
-The next version will support unzipping the downloaded file (if you chose zip).
-
 **Note:** It does not use project versions or tags, it uses the publish date and will download the latest.
 
 ### Download
