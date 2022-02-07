@@ -34,6 +34,6 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "pkg": "^4.4.9"
+    "pkg": "^5.5.2"
   }
 }
