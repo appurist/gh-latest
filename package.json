@@ -1,6 +1,6 @@
 {
   "name": "gh-latest",
-  "version": "1.2.10102",
+  "version": "1.2.41105",
   "description": "A simple tool to fetch the latest version from GitHub.",
   "main": "latest.js",
   "scripts": {
@@ -30,10 +30,10 @@
   },
   "homepage": "https://github.com/appurist/github-latest#readme",
   "dependencies": {
-    "axios": "^0.22.0",
-    "yauzl": "^2.10.0"
+    "axios": "^1.7.7",
+    "yauzl": "^3.2.0"
   },
   "devDependencies": {
-    "pkg": "^4.4.9"
+    "pkg": "^5.8.1"
   }
 }
