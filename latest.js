@@ -1,5 +1,5 @@
-const fs = require('fs')  
-const axios = require('axios')
+const fs = require('fs')
+const { Readable } = require('stream')
 const package = require('./package.json')
 const archive = require('./archive.js')
 
@@ -30,14 +30,33 @@ function MB(bytes) {  // 2 places after the decimal
 
 async function fetchReleases(owner, project) {
   let url = `https://api.github.com/repos/${owner}/${project}/releases`;
-  const response = await axios({ url, method: 'GET', responseType: 'json' })
-  return response.data;
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'gh-latest'
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
 }
 
-async function downloadFile(url, pn) {  
-  const writer = fs.createWriteStream(pn)
-  const response = await axios({ url, method: 'GET', responseType: 'stream' })
-  response.data.pipe(writer)
+async function downloadFile(url, pn) {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'User-Agent': 'gh-latest'
+    }
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error: ${response.status} ${response.statusText}`);
+  }
+  const writer = fs.createWriteStream(pn);
+  // Convert web ReadableStream to Node.js Readable
+  const readable = Readable.fromWeb(response.body);
+  readable.pipe(writer);
   return new Promise((resolve, reject) => {
     writer.on('finish', resolve)
     writer.on('error', reject)
@@ -122,7 +141,7 @@ if (process.argv.length >= 4) {
         case '?': usage(); break;
         case 'x': unzip = true; break;
         case 'X': unzip = true; verbose = true; break;
-        case 'v': 
+        case 'v':
           console.log("latest "+package.version);
           break;
         default:
